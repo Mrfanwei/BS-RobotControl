@@ -1,0 +1,260 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".PowerListActivity" >
+
+    <TextView
+        android:id="@+id/power_title"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:text="功能"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/power_title"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/video_chat"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/chat_shape" >
+
+                    <Button
+                        android:id="@+id/video_chat_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="25dp"
+                        android:background="@drawable/videochat"
+                        android:clickable="false"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/video_chat_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        android:clickable="false"
+                        android:text="视频"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                android:id="@+id/power_address_book"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="2.5dp"
+                android:layout_weight="1"
+                android:background="@drawable/address_shape" >
+
+
+                <Button
+                android:id="@+id/power_address_book_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/address"
+                android:textColor="@android:color/white" />
+
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/power_address_book_img"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="通讯录"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                android:id="@+id/power_photo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="2.5dp"
+                android:layout_weight="0.75"
+                android:background="@drawable/photo_shape" >
+
+
+                <Button
+                android:id="@+id/power_photo_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/photo"
+                android:textColor="@android:color/white" />
+
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/power_photo_img"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="相册"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/video_monitor"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/monitor_shape" >
+
+                    <Button
+                        android:id="@+id/video_monitor_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="25dp"
+                        android:background="@drawable/monitor_plus"
+                        android:clickable="false"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/video_monitor_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        android:clickable="false"
+                        android:text="监控"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                android:id="@+id/power_chat"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="2.5dp"
+                android:layout_weight="1.2"
+                android:background="@drawable/chat_shape" >
+
+
+                <Button
+                android:id="@+id/power_chat_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/chat"
+                android:textColor="@android:color/white" />
+
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/power_chat_img"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="聊天"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/power_task"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/photo_shape" >
+
+                    <Button
+                        android:id="@+id/power_task_img"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="25dp"
+                        android:background="@drawable/taskremind_plus"
+                        android:clickable="false"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/power_task_img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        android:clickable="false"
+                        android:text="事项提醒"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/power_setting"
+                android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/setting_shape" >
+
+                <Button
+                    android:id="@+id/power_setting_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/setting"
+                    android:clickable="false"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/power_setting_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:clickable="false"
+                    android:text="设置"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

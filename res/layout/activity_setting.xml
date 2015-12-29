@@ -1,0 +1,229 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".SettingActivity" >
+
+    <RelativeLayout
+        android:id="@+id/setting_top"
+        android:layout_width="wrap_content"
+        android:layout_height="50dip"
+        android:background="@color/blue" >
+
+        <Button
+            android:id="@+id/setting_back"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/back"
+            android:text="返回"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/setting_user"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:layout_below="@id/setting_top"
+        android:layout_marginTop="10dip"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:src="@drawable/userheadimage" />
+
+        <TextView
+            android:id="@+id/userid"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:drawablePadding="10dp"
+            android:drawableRight="@drawable/toright"
+            android:gravity="center_vertical|right"
+            android:text="未登录"
+            android:textColor="@color/black_deep"
+            android:textSize="13dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/setting_conmmed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setting_user"
+        android:layout_marginTop="20dip"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dip"
+            android:alpha="0.3"
+            android:background="#CCCCCC"
+            android:paddingLeft="15dip" >
+
+            <TextView
+                style="@style/mag"
+                android:layout_width="fill_parent"
+                android:text="通用" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dip"
+            android:orientation="horizontal"
+            android:paddingLeft="15dip" >
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/mag"
+                android:text="仅在WiFi下视频" />
+
+            <com.robotcontrol.widget.SwitchButton
+                android:id="@+id/wifisetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:checked="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/robot_name"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="15dip"
+            android:visibility="gone"
+             >
+
+            <TextView
+                style="@style/mag"
+                android:text="机器人名字"
+                />
+            <EditText 
+                android:id="@+id/robotname"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="小勇"
+                android:gravity="center"
+                android:maxLength="15"
+                android:enabled="false"
+                android:background="@null"
+                />
+            <TextView 
+                android:id="@+id/editname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="编辑"
+                android:layout_centerVertical="true"
+                android:textSize="17sp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/blue"
+                />
+        </RelativeLayout>
+
+        <!-- <RelativeLayout -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="50dip" -->
+        <!-- android:paddingLeft="15dip" > -->
+
+
+        <!-- <TextView -->
+        <!-- android:id="@+id/setting_clear" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="fill_parent" -->
+        <!-- android:gravity="center_vertical" -->
+        <!-- android:text="清除聊天记录" -->
+        <!-- android:textColor="@android:color/holo_blue_light" /> -->
+        <!-- </RelativeLayout> -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/setting_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setting_conmmed"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dip"
+            android:alpha="0.3"
+            android:background="#CCCCCC"
+            android:paddingLeft="15dip" >
+
+            <TextView
+                style="@style/mag"
+                android:layout_width="fill_parent"
+                android:text="关于" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dip"
+            android:orientation="horizontal"
+            android:paddingLeft="15dip" >
+
+            <TextView
+                android:id="@+id/about"
+                style="@style/mag"
+                android:layout_width="fill_parent"
+                android:text="关于我们" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dip"
+            android:paddingLeft="15dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:text="版本信息"
+                android:textColor="@color/black_deep" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dip"
+                android:gravity="center_vertical"
+                android:text="1.0"
+                android:textColor="@color/black_deep" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setting_about"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/setting_exit"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/exit_shape"
+            android:gravity="center"
+            android:text="退出帐号"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

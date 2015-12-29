@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.robotcontrol.activity"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="8" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- 阅读消息 -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- 写入消息 -->
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <!-- 接收消息 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:name="com.robotcontrol.huanxin.DemoApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar" >
+        <activity
+            android:name="com.robotcontrol.activity.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ControlActivity"
+            android:label="@string/title_activity_control"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" >
+        </activity>
+
+        <service android:name="com.robotcontrol.service.SocketService" >
+        </service>
+        <!-- 开机自启动服务 -->
+        <receiver android:name="com.easemob.chat.StartServiceReceiver" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.easemob.chat.EMMonitorReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="robot8868#robot1" >
+        </meta-data>
+
+        <activity
+            android:name="com.robotcontrol.activity.VideoCallActivity"
+            android:label="@string/title_activity_video_call" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ShowBigImage"
+            android:label="@string/title_activity_show_big_image" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ContextMenu"
+            android:label="@string/title_activity_context_menu" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ShowNormalFileActivity"
+            android:label="@string/title_activity_show_normal_file" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ShowVideoActivity"
+            android:label="@string/title_activity_show_video" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.GroupDetailsActivity"
+            android:label="@string/title_activity_group_details" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ExitGroupDialog"
+            android:label="@string/title_activity_exit_group_dialog" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ForwardMessageActivity"
+            android:label="@string/title_activity_forward_message" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ChatRoomDetailsActivity"
+            android:label="@string/title_activity_chat_room_details" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ConnectActivity"
+            android:label="@string/title_activity_connect"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.TaskRemindActivity"
+            android:label="@string/title_activity_task_remind"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.PowerListActivity"
+            android:label="@string/title_activity_power_list"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.AddTaskActivity"
+            android:label="@string/title_activity_add_task"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.AddressBook"
+            android:label="@string/title_activity_address_book"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.PhotoActivity"
+            android:label="@string/title_activity_photo"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.WelComeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.GuideActivity"
+            android:label="@string/title_activity_guide"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.ShowbigimageActivity"
+            android:label="@string/title_activity_showbigimage" >
+        </activity>
+        <activity
+            android:name="com.robotcontrol.activity.BindRobotActivity"
+            android:label="@string/title_activity_bind_robot"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <receiver android:name="com.robotcontrol.broadcastReceiver.SocketErrorReceiver" >
+            <intent-filter>
+                <action android:name="socket_error" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.robotcontrol.service.UpdateService" >
+        </service>
+    </application>
+
+</manifest>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/btn_white_normal"
+    >
+    <TextView
+        android:id="@+id/robot_item"
+        android:layout_width="wrap_content"
+        android:layout_height="80dip"
+        android:textColor="@color/black_deep"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:text="未找到机器人"
+        />
+    <TextView 
+        android:id="@+id/robot_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未被控制"
+        android:layout_below="@id/robot_item"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        />
+    <TextView
+        android:id="@+id/rid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        />
+    <TextView 
+        android:id="@+id/online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="离线"
+        android:textColor="@color/btn_green_noraml"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        />
+</RelativeLayout>

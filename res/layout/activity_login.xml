@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context=".LoginActivity" >
+
+    
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:gravity="center"
+        android:text="@string/login_title"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+         >
+
+    <LinearLayout
+        android:id="@+id/login_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:padding="5dip" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:drawableRight="@drawable/edit_left"
+                android:drawableStart="@drawable/phonenumber" />
+
+            <EditText
+                android:id="@+id/edit_phonenumber"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_shape_login"
+                android:hint="@string/number"
+                android:inputType="number"
+                android:textSize="15sp"
+                android:maxLength="11"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:drawableRight="@drawable/edit_left"
+                android:drawableStart="@drawable/self" />
+
+            <EditText
+                android:id="@+id/edit_vaildcode"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edit_shape_login"
+                android:hint="@string/inputvaildcode"
+                android:inputType="number"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:maxLength="4"
+                android:textColorHint="@android:color/white" />
+
+            <Button
+                android:id="@+id/getvaild"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:layout_gravity="center"
+                android:background="@drawable/getvilery"
+                android:text="@string/getvaild"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="240dip"
+        android:layout_height="50dip"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/title_shape"
+        android:layout_below="@id/login_content"
+        android:text="@string/login"
+        android:layout_marginTop="80dp"
+        android:textColor="@android:color/white" />
+    </RelativeLayout>
+    
+</RelativeLayout>

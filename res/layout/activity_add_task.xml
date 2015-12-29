@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".AddTaskActivity" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:text="添加任务"
+        android:textColor="@color/white" />
+    
+    <LinearLayout
+        android:id="@+id/add_task_time"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/textView1"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button"
+            android:text="选择日期" />
+
+        <Button
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button"
+            android:text="选择时间" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/taskcontent"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/button"
+        android:ems="10"
+        android:hint="请输入提醒内容"
+        android:textColorHint="@color/white" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="57dp"
+        android:background="@drawable/button"
+        android:onClick="over"
+        android:text="完成" />
+
+    <EditText
+        android:id="@+id/task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/taskcontent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/button"
+        android:ems="10"
+        android:hint="请输入标题"
+        android:textColorHint="@color/white" />
+
+    <Button
+        android:id="@+id/button2"
+        android:onClick="choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/task_title"
+        android:layout_alignBottom="@+id/task_title"
+        android:layout_alignRight="@+id/task_title"
+        android:background="@drawable/about" />
+
+</RelativeLayout>
