@@ -87,6 +87,14 @@ public class BindRobotActivity extends Activity implements Callback {
 		public void onClick(View v) {
 			String id = edit_robot_id.getText().toString().trim();
 			String robot_serial = edit_robot_serial.getText().toString().trim();
+			if (id == null || id.equals("")) {
+				ToastUtil.showtomain(BindRobotActivity.this, "id不能为空");
+				return;
+			}
+			if (robot_serial == null || robot_serial.equals("")) {
+				ToastUtil.showtomain(BindRobotActivity.this, "序列码不能为空");
+				return;
+			}
 			bindrobot(id, robot_serial);
 		}
 	};
@@ -108,7 +116,7 @@ public class BindRobotActivity extends Activity implements Callback {
 				params.put("robot_serial", serial);
 				try {
 					NetUtil.getinstance().http(
-							getString(R.string.url) + "/robot/bind", params,
+							"/robot/bind", params,
 							new callback() {
 
 								@Override
@@ -243,7 +251,6 @@ public class BindRobotActivity extends Activity implements Callback {
 				robotinfo = resultString.split("-");
 				bindrobot(robotinfo[0], robotinfo[1]);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				ToastUtil.showtomain(this, "请扫描正确的二维码！");
 			}
@@ -252,7 +259,6 @@ public class BindRobotActivity extends Activity implements Callback {
 
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					handletoast.sendEmptyMessage(0);
 				}
 			}, 1500);
@@ -310,9 +316,6 @@ public class BindRobotActivity extends Activity implements Callback {
 
 	private void initBeepSound() {
 		if (playBeep && mediaPlayer == null) {
-			// The volume on STREAM_SYSTEM is not adjustable, and users found it
-			// too loud,
-			// so we now play on the music stream.
 			setVolumeControlStream(AudioManager.STREAM_MUSIC);
 			mediaPlayer = new MediaPlayer();
 			mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);

@@ -15,7 +15,6 @@ import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 
 import com.robotcontrol.net.helper.SocketHandler.SocketHandlerListener;
-import com.robotcontrol.utils.ThreadPool;
 
 /**
  * socket网络连接类.

@@ -14,6 +14,10 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.robotcontrol.huanxin.DemoApplication;
+import com.robotcontrol.utils.Constants;
+
+import android.content.Intent;
 import android.util.Log;
 
 @SuppressWarnings("unused")
@@ -191,17 +195,17 @@ public class Decoder extends FrameDecoder {
 			if (head2 < 0) {
 
 				this.buffer.resetReaderIndex();
-
 				return null;
 			}
+
 			if (this.buffer.readableBytes() < head2) {
 				this.buffer.resetReaderIndex();
 				return null;
 			}
-			Log.i("byte", head2 + "");
+
 			byte[] body2 = new byte[head2];
 			this.buffer.readBytes(body2);
-			Log.i("", bytesToHexString(body2));
+
 			Result2 result2 = new Result2();
 			result2.json = json;
 			result2.datas = body2;

@@ -1,14 +1,27 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
 
     <RelativeLayout
+        android:id="@+id/tasks_title"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background="#33ffff"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue"
         android:padding="5dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:onClick="back"
+            android:text="返回"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -16,7 +29,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="任务提醒"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
 
         <Button
             android:layout_width="wrap_content"
@@ -25,20 +38,72 @@
             android:background="@null"
             android:gravity="center"
             android:onClick="add"
-            android:text="添加" />
+            android:text="添加"
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/task_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+	<RelativeLayout
+        android:id="@+id/task_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tasks_title" >
+    </RelativeLayout>
 
-        <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@+id/tasklist"
+    <LinearLayout
+        android:id="@+id/task_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/taskitem_shape"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/reminditem"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:divider="@null" >
-        </com.baoyz.swipemenulistview.SwipeMenuListView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_weight="1" >
 
-</LinearLayout>
+            <ImageView
+                android:id="@+id/reminditem_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/tx"
+                android:textColor="@color/blue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/reminditem_img"
+                android:layout_centerHorizontal="true"
+                android:text="提醒"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/alarmitem"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/alarmitem_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/nz"
+                android:textColor="@color/blue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alarmitem_img"
+                android:layout_centerHorizontal="true"
+                android:text="闹钟"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

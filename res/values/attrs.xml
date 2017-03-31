@@ -27,4 +27,28 @@
 		<attr name="kswAnimationDuration" format="integer"/>
 		<attr name="kswTintColor" format="color|reference"/>
 	</declare-styleable>
+	
+    <declare-styleable name="TasksCompletedView">
+        <attr name="radius" format="dimension"/>
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="circleColor" format="color"/>
+        <attr name="ringColor" format="color"/>
+    </declare-styleable>
+    
+    <declare-styleable name="PercentLayout_Layout">
+        <attr name="layout_widthPercent" format="string"/>
+        <attr name="layout_heightPercent" format="string"/>
+        <attr name="layout_marginPercent" format="string"/>
+        <attr name="layout_marginLeftPercent" format="string"/>
+        <attr name="layout_marginTopPercent" format="string"/>
+        <attr name="layout_marginRightPercent" format="string"/>
+        <attr name="layout_marginBottomPercent" format="string"/>
+        <attr name="layout_marginStartPercent" format="string"/>
+        <attr name="layout_marginEndPercent" format="string"/>
+        <attr name="layout_textSizePercent" format="string"/>
+        <attr name="layout_maxWidthPercent" format="string"/>
+        <attr name="layout_maxHeightPercent" format="string"/>
+        <attr name="layout_minWidthPercent" format="string"/>
+        <attr name="layout_minHeightPercent" format="string"/>
+    </declare-styleable>
 </resources>

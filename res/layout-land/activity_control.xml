@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/white" >
+    >
 
     <SurfaceView
         android:id="@+id/opposite_surface"
@@ -60,6 +60,7 @@
                 android:src="@drawable/left" />
 
             <TextView
+                android:id="@+id/move"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:background="@drawable/cz"
@@ -109,6 +110,7 @@
                 android:src="@drawable/left" />
 
             <TextView
+                android:id="@+id/head"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:background="@drawable/tou"

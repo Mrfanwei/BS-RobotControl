@@ -14,7 +14,12 @@
 package com.robotcontrol.huanxin;
 
 import android.content.res.Configuration;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -61,6 +66,7 @@ public class CameraHelper implements PreviewCallback {
 	 * 开启相机拍摄
 	 */
 	public void startCapture() {
+
 		try {
 			cameraInfo = new CameraInfo();
 			if (mCamera == null) {
@@ -158,10 +164,9 @@ public class CameraHelper implements PreviewCallback {
 					callHelper.processPreviewData(mheight, mwidth, yuv_frame);
 					Log.i("0or90", "true");
 				} else {
-					//YUV42left2right(yuv_Rotate90, yuv_frame, mwidth, mheight);
-					callHelper
-							.processPreviewData(mheight, mwidth, yuv_frame);
-					Log.i("270", "true");
+					// YUV42left2right(yuv_Rotate90, yuv_frame, mwidth,
+					// mheight);
+					callHelper.processPreviewData(mheight, mwidth, yuv_frame);
 				}
 			}
 		}
@@ -171,13 +176,18 @@ public class CameraHelper implements PreviewCallback {
 	/**
 	 * 停止拍摄
 	 */
-	public void stopCapture() {
+	public void stopCapture(SurfaceHolder holder) {
+//		Canvas canvas = holder.lockCanvas(null);
+//		canvas.save();
+//		canvas.restore();
+//		holder.unlockCanvasAndPost(canvas);
 		start_flag = false;
 		if (mCamera != null) {
 			mCamera.setPreviewCallback(null);
 			mCamera.stopPreview();
 			mCamera.release();
 			mCamera = null;
+
 		}
 	}
 
@@ -288,40 +298,40 @@ public class CameraHelper implements PreviewCallback {
 	}
 
 	void YUV42left2right(byte[] dst, byte[] src, int srcWidth, int srcHeight) {
-        // int nWidth = 0, nHeight = 0;
-        int wh = 0;
-        int uvHeight = 0;
-        // if(srcWidth != nWidth || srcHeight != nHeight)
-        {
-            // nWidth = srcWidth;
-            // nHeight = srcHeight;
-            wh = srcWidth * srcHeight;
-            uvHeight = srcHeight >> 1;// uvHeight = height / 2
-        }
+		// int nWidth = 0, nHeight = 0;
+		int wh = 0;
+		int uvHeight = 0;
+		// if(srcWidth != nWidth || srcHeight != nHeight)
+		{
+			// nWidth = srcWidth;
+			// nHeight = srcHeight;
+			wh = srcWidth * srcHeight;
+			uvHeight = srcHeight >> 1;// uvHeight = height / 2
+		}
 
-        // 转换Y
-        int k = 0;
-        int nPos = 0;
-        for (int i = 0; i < srcHeight; i++) {
-            nPos += srcWidth;
-            for (int j = 0; j < srcWidth; j++) {
-                dst[k] = src[nPos - j - 1];
-                k++;
-            }
+		// 转换Y
+		int k = 0;
+		int nPos = 0;
+		for (int i = 0; i < srcHeight; i++) {
+			nPos += srcWidth;
+			for (int j = 0; j < srcWidth; j++) {
+				dst[k] = src[nPos - j - 1];
+				k++;
+			}
 
-        }
-        nPos = wh + srcWidth - 1;
-        for (int i = 0; i < uvHeight; i++) {
-            for (int j = 0; j < srcWidth; j += 2) {
-                dst[k] = src[nPos - j - 1];
-                dst[k + 1] = src[nPos - j];
-                k += 2;
+		}
+		nPos = wh + srcWidth - 1;
+		for (int i = 0; i < uvHeight; i++) {
+			for (int j = 0; j < srcWidth; j += 2) {
+				dst[k] = src[nPos - j - 1];
+				dst[k + 1] = src[nPos - j];
+				k += 2;
 
-            }
-            nPos += srcWidth;
-        }
-        return;
-    }
+			}
+			nPos += srcWidth;
+		}
+		return;
+	}
 
 	boolean isScreenOriatationPortrait() {
 		return DemoApplication.applicationContext.getResources()

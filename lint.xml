@@ -2,4 +2,8 @@
 <lint>
     <issue id="DefaultLocale" severity="ignore" />
     <issue id="HandlerLeak" severity="ignore" />
+    <issue id="SetJavaScriptEnabled">
+        <ignore path="src/com/robotcontrol/activity/AboutActivity.java" />
+    </issue>
+    <issue id="WrongCall" severity="ignore" />
 </lint>

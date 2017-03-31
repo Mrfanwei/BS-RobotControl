@@ -199,6 +199,7 @@
                 android:textColor="@color/black_deep" />
 
             <TextView
+                android:id="@+id/versionname"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_alignParentRight="true"

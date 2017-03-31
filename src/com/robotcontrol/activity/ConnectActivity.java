@@ -2,7 +2,6 @@ package com.robotcontrol.activity;
 
 import android.annotation.SuppressLint;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 
 import android.content.BroadcastReceiver;
@@ -14,7 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Message;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -42,6 +41,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 
 import com.robotcontrol.adapter.RobotAdapter;
 import com.robotcontrol.bean.Robot;
+import com.robotcontrol.biz.Biz;
 import com.robotcontrol.service.SocketService;
 import com.robotcontrol.utils.BroadcastReceiverRegister;
 import com.robotcontrol.utils.Constants;
@@ -53,7 +53,6 @@ import com.robotcontrol.utils.ThreadPool;
 import com.robotcontrol.utils.ToastUtil;
 import com.robotcontrol.widget.RobotDialog;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,22 +64,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
-public class ConnectActivity extends Activity implements View.OnClickListener {
+public class ConnectActivity extends BaseActivity implements
+		View.OnClickListener {
 
 	private SwipeMenuListView robots_bind;
 	private TextView findrobot;
 	private SharedPreferences sharedPreferences;
-	private List<Robot> list_robots;
+	private static List<Robot> list_robots;
 	private SwipeRefreshLayout refreshableView;
 	private TextView setting;
 	private long time;
-	private int flag = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_connect);
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void initlayout(OnRefreshListener onRefreshListener) {
 		robots_bind = (SwipeMenuListView) findViewById(R.id.robotlist_bind);
 		refreshableView = (SwipeRefreshLayout) findViewById(R.id.refresh_bind);
 		robots_bind.setOnItemClickListener(itemClickListener);
@@ -90,183 +92,137 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 		setting.setOnClickListener(this);
 		sharedPreferences = getSharedPreferences("userinfo", 0);
 		list_robots = new ArrayList<Robot>();
-		refreshableView.setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				if (System.currentTimeMillis() - time < 1000) {
-					ToastUtil.showtomain(ConnectActivity.this,
-							"不要刷新得这么频繁嘛！(ˉ▽ˉ；)...");
-					refreshableView.setRefreshing(false);
-				} else {
-					getrobotinfo();
-				}
-			}
-		});
-		getrobotinfo();
-		flag = 0;
+		refreshableView.setOnRefreshListener(onRefreshListener);
 	}
 
-	// private void SendMSearchMessage() {
-	// SSDPSearchMsg searchProduct = new SSDPSearchMsg(SSDPConstants.Root);
-	// SSDPSocket sock = null;
-	// try {
-	// sock = new SSDPSocket();
-	// for (int i = 0; i < 2; i++) {
-	// sock.send(searchProduct.toString());
-	// Log.i("-------------", "要发送的消息为：" + searchProduct.toString());
-	// }
-	// while (true) {
-	// DatagramPacket dp = sock.receive(); // Here, I only receive the
-	// // same packets I initially
-	// // sent above
-	// String c = new String(dp.getData()).trim();
-	// String ip = new String(dp.getAddress().toString()).trim();
-	// Log.i("------------", "接收到的消息为：" + c + "来源IP地址：" + ip);
-	// }
-	// } catch (IOException e) {
-	// Log.e("M-SEARCH", e.getMessage());
-	// }
-	// }
-
 	@Override
-	protected void onResume() {
-		if (flag == 0) {
-			flag = 1;
+	public void onRefresh() {
+		if (System.currentTimeMillis() - time < 1000) {
+			ToastUtil.showtomain(ConnectActivity.this, "不要刷新得这么频繁嘛！(ˉ▽ˉ；)...");
+			refreshableView.setRefreshing(false);
 		} else {
 			getrobotinfo();
 		}
+		super.onRefresh();
+	}
+
+	@Override
+	protected void onResume() {
+		if (Constants.flag) {
+			sendBroadcast(new Intent(Constants.Stop));
+			stopService(new Intent(this, SocketService.class));
+		}
+		getrobotinfo();
+		time = 0;
 		super.onResume();
 	}
 
+	@Override
+	protected void onPause() {
+		time = 0;
+		super.onPause();
+	}
+
 	public void getrobotinfo() {
+		synchronized (this) {
+			ThreadPool.execute(new Runnable() {
 
-		ThreadPool.execute(new Runnable() {
-
-			@Override
-			public void run() {
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("id", sharedPreferences.getInt("id", 0) + "");
-				params.put("session",
-						sharedPreferences.getString("session", null));
-				list_robots.clear();
-				if (list_robots.size() == 0) {
-					try {
-						NetUtil.getinstance().http(
-								getString(R.string.url) + "/robot/info",
-								params, new callback() {
-
-									@Override
-									public void success(JSONObject json) {
-										try {
-											String jsonstr = json
-													.getString("Robots");
-											JSONArray jsonarray = new JSONArray(
-													jsonstr);
-											for (int i = 0; i < jsonarray
-													.length(); i++) {
-												Robot robot = new Robot();
-												JSONObject jsonobject = jsonarray
-														.getJSONObject(i);
-												robot.setId(jsonobject
-														.getString("id"));
-												robot.setAddress(jsonobject
-														.getString("addr"));
-												robot.setRid(jsonobject
-														.getInt("rid"));
-												robot.setRname(jsonobject
-														.getString("rname"));
-												robot.setOnline(jsonobject
-														.getBoolean("online"));
-												robot.setController(jsonobject
-														.getInt("controller"));
-												robot.setRobot_serial(jsonobject
-														.getString("serial"));
-												robot.setAir(Robot.air.bind);
-												list_robots.add(robot);
+				@Override
+				public void run() {
+					Map<String, String> params = new HashMap<String, String>();
+					params.put("id", sharedPreferences.getInt("id", 0) + "");
+					params.put("session",
+							sharedPreferences.getString("session", null));
+					list_robots.clear();
+					if (list_robots.size() == 0) {
+						try {
+							NetUtil.getinstance().http("/robot/info", params,
+									new callback() {
+										@Override
+										public void success(JSONObject json) {
+											try {
+												Biz.adapter_robot(json,
+														list_robots);
+											} catch (JSONException e) {
+												// block
+												e.printStackTrace();
 											}
 											time = System.currentTimeMillis();
 											handler.sendEmptyMessage(2);
-										} catch (JSONException e1) {
-
-											e1.printStackTrace();
 										}
-									}
 
-									@Override
-									public void error(String errorresult) {
-										HandlerUtil.sendmsg(handler,
-												errorresult, 5);
-									}
-								}, ConnectActivity.this);
-					} catch (SocketTimeoutException e) {
-						if (refreshableView.isRefreshing()) {
-							refreshableView.setRefreshing(false);
+										@Override
+										public void error(String errorresult) {
+											HandlerUtil.sendmsg(handler,
+													errorresult, 5);
+										}
+									}, ConnectActivity.this);
+						} catch (SocketTimeoutException e) {
+							if (refreshableView.isRefreshing()) {
+								refreshableView.setRefreshing(false);
+							}
+							HandlerUtil.sendmsg(handler, "请求超时", 5);
+							e.printStackTrace();
 						}
-						HandlerUtil.sendmsg(handler, "请求超时", 5);
-						e.printStackTrace();
+
 					}
 
 				}
-
-			}
-		});
+			});
+		}
 	}
 
-	Handler handler = new Handler() {
-		public void dispatchMessage(android.os.Message msg) {
-			switch (msg.what) {
-			case 1:
-				ToastUtil.showtomain(ConnectActivity.this, "机器人不存在");
-				break;
-			case 2:
+	@Override
+	public void onHandlerMessage(Message msg) {
+		switch (msg.what) {
+		case 1:
+			ToastUtil.showtomain(ConnectActivity.this, "机器人不存在");
+			break;
+		case 2:
+			refreshableView.setRefreshing(false);
+			setadapter();
+			refreshableView.setEnabled(true);
+			break;
+		case 4:
+			ToastUtil.showtomain(ConnectActivity.this, "连接失败");
+			break;
+		case 5:
+			if (refreshableView.isRefreshing()) {
 				refreshableView.setRefreshing(false);
-				setadapter();
-				break;
-			case 3:
-				robot.notifyDataSetChanged();
-				refreshableView.setRefreshing(false);
-				break;
-			case 4:
-				ToastUtil.showtomain(ConnectActivity.this, "连接失败");
-				break;
-			case 5:
-				if (refreshableView.isRefreshing()) {
-					refreshableView.setRefreshing(false);
-				}
-				if (unbind != null) {
-					list_robots.add(unbind);
-					robot.notifyDataSetChanged();
-				}
-				ToastUtil.showtomain(ConnectActivity.this, msg.getData()
-						.getString("result"));
-				break;
-			case 6:
-				ToastUtil.showtomain(ConnectActivity.this, "该机器人不在线！");
-				break;
-			case 7:
-				backlogin("用户登录过期，请重新登录！");
-				break;
-			case 8:
-				backlogin("用户登录错误，请重新登录！");
-				break;
-			case 9:
-				ToastUtil.showtomain(ConnectActivity.this, "机器人已被控制");
-				break;
-			case 10:
-				ToastUtil.showtomain(ConnectActivity.this, "机器人已被绑定！");
-				break;
-			case 11:
-				ToastUtil.showtomain(ConnectActivity.this, "已超过绑定数量！");
-				break;
-			case 12:
-				ToastUtil.showtomain(ConnectActivity.this, "绑定参数不正确！");
-				break;
-			default:
-				break;
 			}
+			if (unbind != null) {
+				list_robots.add(unbind);
+				handler.sendEmptyMessage(2);
+			}
+			ToastUtil.showtomain(ConnectActivity.this,
+					msg.getData().getString("result"));
+			break;
+		case 6:
+			ToastUtil.showtomain(ConnectActivity.this, "该机器人不在线！");
+			break;
+		case 7:
+			backlogin("用户登录过期，请重新登录！");
+			break;
+		case 8:
+			backlogin("用户登录错误，请重新登录！");
+			break;
+		case 9:
+			ToastUtil.showtomain(ConnectActivity.this, "机器人已被控制");
+			break;
+		case 10:
+			ToastUtil.showtomain(ConnectActivity.this, "机器人已被绑定！");
+			break;
+		case 11:
+			ToastUtil.showtomain(ConnectActivity.this, "已超过绑定数量！");
+			break;
+		case 12:
+			ToastUtil.showtomain(ConnectActivity.this, "绑定参数不正确！");
+			break;
+		default:
+			break;
+		}
 
-		};
-	};
+	}
 
 	private void backlogin(String content) {
 		ToastUtil.showtomain(ConnectActivity.this, content);
@@ -310,8 +266,6 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 				return;
 			}
 			String username = list_robots.get(position).getId();
-			Intent intent1 = new Intent(ConnectActivity.this,
-					SocketService.class);
 			getSharedPreferences("Receipt", MODE_PRIVATE)
 					.edit()
 					.putString("username", username)
@@ -320,7 +274,7 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 			getSharedPreferences("robotname", MODE_PRIVATE).edit()
 					.putString("name", list_robots.get(position).getRname())
 					.commit();
-			startService(intent1);
+			sendBroadcast(new Intent(Constants.Start_Socket));
 			BroadcastReceiverRegister.reg(ConnectActivity.this,
 					new String[] { "online" }, bro);
 			pro = new ProgressDialog(ConnectActivity.this);
@@ -371,7 +325,7 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 			}
 		}
 	};
-	private RobotAdapter robot = null;
+	private static RobotAdapter robot;
 
 	public List<Robot> sort(List<Robot> list) {
 		List<Robot> rs = new ArrayList<Robot>();
@@ -400,10 +354,10 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 	Robot unbind = null;
 
 	// 适配listview
-	private void setadapter() {
-
+	public void setadapter() {
 		list_robots = sort(list_robots);
-		robot = new RobotAdapter(ConnectActivity.this, list_robots);
+		robot = new RobotAdapter(this, list_robots);
+
 		SwipeMenuCreator creator = new SwipeMenuCreator() {
 
 			@Override
@@ -473,10 +427,8 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 							@Override
 							public void run() {
 								try {
-									NetUtil.getinstance().http(
-											getString(R.string.url)
-													+ "/robot/unbind", param,
-											new callback() {
+									NetUtil.getinstance().http("/robot/unbind",
+											param, new callback() {
 
 												@Override
 												public void success(
@@ -484,7 +436,6 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 
 													Log.i("Success",
 															json.toString());
-													list_robots.clear();
 													getrobotinfo();
 													refreshableView
 															.setRefreshing(false);
@@ -513,8 +464,11 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 			}
 		});
 
-		robots_bind.setAdapter(robot);
-	}
+		synchronized (this) {
+			robots_bind.setAdapter(robot);
+		}
+
+	};
 
 	@Override
 	protected void onStart() {
@@ -528,13 +482,15 @@ public class ConnectActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.connect, menu);
 		return true;
 	}
 
 	@Override
 	public void onBackPressed() {
-		stopService(new Intent(this, SocketService.class));
+		if (Constants.flag) {
+			sendBroadcast(new Intent(Constants.Stop));
+			stopService(new Intent(this, SocketService.class));
+		}
 		super.onBackPressed();
 	}
 

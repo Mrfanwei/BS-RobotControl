@@ -532,7 +532,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         
         @Override
         public void onSuccess(EMChatRoom value) {
-            // TODO Auto-generated method stub
              runOnUiThread(new Runnable(){
                    @Override
                    public void run(){
@@ -554,7 +553,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         
         @Override
         public void onError(final int error, String errorMsg) {
-                // TODO Auto-generated method stub
                 EMLog.d(TAG, "join room failure : " + error);
                runOnUiThread(new Runnable(){
                    @Override

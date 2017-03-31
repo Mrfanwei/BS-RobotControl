@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">萝卜铺</string>
+    <string name="app_name">小勇机器人</string>
     <string name="version_url">http://resource.yydrobot.com/app/app.version</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="url">http://server.yydrobot.com</string>
-<!--     <string name="url">http://120.24.242.163:81</string> -->
+    <string name="test_url">http://120.24.242.163:81</string>
     <string name="ip">server.yydrobot.com</string>
-<!--     <string name="ip">120.24.242.163</string> -->
+    <string name="test_ip">120.24.242.163</string>
     <string name="port">8002</string>
     <string name="app_id">56065ce8</string>
     <string name="about_url">http://www.yydrobot.com</string>
@@ -470,5 +470,8 @@
     <string name="title_activity_showbigimage">ShowbigimageActivity</string>
     <string name="title_activity_bind_robot">BindRobotActivity</string>
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
-
+    <string name="title_activity_big_image">BigImageActivity</string>
+    <string name="time_out">请求超时！</string>
+    <string name="vaild_error">验证码错误</string>
+    <string name="Captchaoverdue">验证码过期</string>
 </resources>

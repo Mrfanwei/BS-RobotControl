@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="提醒我吃饭fassssssssssssssssssssssssssssssssssssssssssssss"
+        android:maxLength="20"
         android:textColor="@color/black_deep"
         android:textSize="18sp" />
 

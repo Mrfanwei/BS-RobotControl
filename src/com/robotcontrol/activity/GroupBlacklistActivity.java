@@ -2,8 +2,6 @@ package com.robotcontrol.activity;
 
 import java.util.Collections;
 import java.util.List;
-
-import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 import com.robotcontrol.huanxin.BaseActivity;

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.robotcontrol.activity"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -200,10 +200,6 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.robotcontrol.activity.ShowbigimageActivity"
-            android:label="@string/title_activity_showbigimage" >
-        </activity>
-        <activity
             android:name="com.robotcontrol.activity.BindRobotActivity"
             android:label="@string/title_activity_bind_robot"
             android:screenOrientation="portrait" >
@@ -217,6 +213,11 @@
 
         <service android:name="com.robotcontrol.service.UpdateService" >
         </service>
+
+        <activity
+            android:name="com.robotcontrol.activity.BigImageActivity"
+            android:label="@string/title_activity_big_image" >
+        </activity>
     </application>
 
 </manifest>

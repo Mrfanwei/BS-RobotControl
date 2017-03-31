@@ -44,7 +44,7 @@ public class UpdateService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		updatemanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		updatenotfication = new Notification(R.drawable.app_icon, "下载中",
+		updatenotfication = new Notification(R.drawable.app_icon, "下载中1",
 				System.currentTimeMillis());
 		updatenotfication.flags = Notification.FLAG_ONGOING_EVENT;
 
@@ -55,7 +55,7 @@ public class UpdateService extends Service {
 		updatependingintent = PendingIntent.getActivity(this, 0, updateintent,
 				0);
 
-		updatenotfication.setLatestEventInfo(this, "下载", "下载中",
+		updatenotfication.setLatestEventInfo(this, "下载2", "下载中3",
 				updatependingintent);
 		// updatenotfication.contentView = contentview;
 		updatemanager.notify(0, updatenotfication);

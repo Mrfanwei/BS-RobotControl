@@ -6,13 +6,10 @@ import android.media.Ringtone;
 import android.media.SoundPool;
 import android.os.Bundle;
 
-import com.easemob.chat.CmdMessageBody;
 import com.easemob.chat.EMCallStateChangeListener;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
-import com.easemob.chat.EMMessage.Type;
-import com.easemob.exceptions.EaseMobException;
 import com.robotcontrol.activity.R;
 
 public class CallActivity extends BaseActivity {
@@ -33,21 +30,10 @@ public class CallActivity extends BaseActivity {
 		super.onCreate(arg0);
 		audioManager = (AudioManager) this
 				.getSystemService(Context.AUDIO_SERVICE);
-		sendmsg();
+		
 	}
 
-	private void sendmsg() {
-		EMMessage msg = EMMessage.createSendMessage(Type.CMD);
-		msg.setReceipt(username);
-		CmdMessageBody cmd = new CmdMessageBody("yongyida.robot.video.rotate");
-		msg.setAttribute("angle", 0);
-		msg.addBody(cmd);
-		try {
-			EMChatManager.getInstance().sendMessage(msg);
-		} catch (EaseMobException e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	@Override
 	protected void onDestroy() {

@@ -1,5 +1,6 @@
 package com.robotcontrol.adapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.robotcontrol.activity.R;
@@ -17,12 +18,14 @@ import android.widget.TextView;
 public class RobotAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<Robot> robots;
+	private static List<Robot> robots;
 
 	public RobotAdapter(Context context, List<Robot> robots) {
 		super();
 		this.context = context;
-		this.robots = robots;
+		synchronized (robots) {
+			this.robots = robots;
+		}
 
 	}
 
@@ -52,7 +55,7 @@ public class RobotAdapter extends BaseAdapter {
 		if (layout == null) {
 			layout = LayoutInflater.from(context);
 		}
-		if (v == null && context != null&&index<=robots.size()) {
+		if (v == null) {
 			v = layout.inflate(R.layout.robotitem, null);
 			robotholder = new RobotHolder();
 			robotholder.robotname = (TextView) v.findViewById(R.id.robot_item);
@@ -83,8 +86,8 @@ public class RobotAdapter extends BaseAdapter {
 				}
 				v.setTag(robotholder);
 			}
-		}else if(index==robots.size()-1){
-			return null;
+		} else if (v != null) {
+			robotholder = (RobotHolder) v.getTag();
 		}
 
 		return v;

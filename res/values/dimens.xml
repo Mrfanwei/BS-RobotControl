@@ -185,4 +185,10 @@
     <dimen name="qav_msg_text_max_width">226dp</dimen>
     <dimen name="qav_waiting_text_max_width">128dp</dimen>
     <dimen name="qav_smartbar_height">48dp</dimen>
+    
+    
+    <dimen name="dp_100">100dip</dimen>
+    <dimen name="dp_60">60dip</dimen>
+    
+    <dimen name="sp_22">22sp</dimen>
 </resources>

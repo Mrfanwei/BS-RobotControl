@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
 import android.util.Xml;
 
 public class XmlUtil {
@@ -47,5 +48,13 @@ public class XmlUtil {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String xmltext(String text, String tree) {
+		int start = text.indexOf(tree);
+		int end = text.indexOf("/" + tree);
+		String result= text.substring(start+tree.length()+1, end-1);
+		Log.i("result", result);
+		return result;
 	}
 }

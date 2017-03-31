@@ -1,9 +1,19 @@
 package com.robotcontrol.utils;
 
+import com.robotcontrol.bean.Alarm;
+import com.robotcontrol.bean.Result;
 import com.robotcontrol.bean.Task;
 
 public class Constants {
 
+	// 请求地址
+	public static String address = "http://server.yydrobot.com";
+
+	// socket ip地址
+	public static String ip = "server.yydrobot.com";
+
+	// socket 端口号
+	public static String port = "8002";
 	// 任务添加操作请求码
 	public static int add_RequestCode = 888;
 
@@ -36,6 +46,8 @@ public class Constants {
 
 	// 公用的task类
 	public static Task task;
+	
+	public static Alarm alarm;
 
 	// 任务的四种action
 	public static String Task_Add = "task_add";
@@ -85,5 +97,9 @@ public class Constants {
 
 	// 视频模式
 	public static String Video_Mode = "yongyida.robot.video.videomode";
+
+	public static boolean flag = false;
+	
+	public static String Start_Socket="start_socket";
 
 }

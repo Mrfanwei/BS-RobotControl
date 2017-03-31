@@ -1,16 +1,14 @@
 package com.robotcontrol.bean;
 
-import java.util.Date;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Task implements Parcelable {
 
-	private static final long serialVersionUID = -7060210544600464481L;
 	private int id;
 	private String settime;
 	private String title;
+	private String content;
 
 	public String getTitle() {
 		return title;
@@ -19,9 +17,6 @@ public class Task implements Parcelable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-	private String content;
-	private int isaway;
 
 	public int getId() {
 		return id;
@@ -47,17 +42,8 @@ public class Task implements Parcelable {
 		this.content = content;
 	}
 
-	public int getIsaway() {
-		return isaway;
-	}
-
-	public void setIsaway(int isaway) {
-		this.isaway = isaway;
-	}
-
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -66,21 +52,17 @@ public class Task implements Parcelable {
 		out.writeString(content);
 		out.writeString(title);
 		out.writeString(settime);
-		out.writeInt(isaway);
 		out.writeInt(id);
-
 	}
 
 	public Task(Parcel in) {
 		content = in.readString();
 		title = in.readString();
 		settime = in.readString();
-		isaway = in.readInt();
 		id = in.readInt();
 	}
 
 	public Task() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public static final Parcelable.Creator<Task> CREATOR = new Creator<Task>() {

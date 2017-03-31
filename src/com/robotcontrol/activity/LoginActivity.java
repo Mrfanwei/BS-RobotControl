@@ -23,22 +23,20 @@ import com.robotcontrol.huanxin.DemoHXSDKHelper;
 import com.robotcontrol.huanxin.HXSDKHelper;
 import com.robotcontrol.huanxin.User;
 import com.robotcontrol.huanxin.UserDao;
+import com.robotcontrol.utils.Constants;
 import com.robotcontrol.utils.HandlerUtil;
 import com.robotcontrol.utils.NetUtil;
 import com.robotcontrol.utils.NetUtil.callback;
-import com.robotcontrol.utils.SmsContent;
 import com.robotcontrol.utils.StartUtil;
 import com.robotcontrol.utils.ThreadPool;
 import com.robotcontrol.utils.ToastUtil;
 
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -49,38 +47,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private EditText edit_phonenum;
 	private EditText edit_vaildcode;
 	private Button login;
 	private Button getvaild;
-	private SmsContent smsContent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
-		SharedPreferences sharedPreferences = getSharedPreferences("userinfo",
-				MODE_PRIVATE);
-		int id = sharedPreferences.getInt("id", 0);
-		// 如果本地存在记录则自动跳转
-		if (id != 0 && DemoHXSDKHelper.getInstance().isLogined()) {
-			StartUtil.startintent(this, ConnectActivity.class, "finish");
-			return;
-		}
-		edit_phonenum = (EditText) findViewById(R.id.edit_phonenumber);
-
-		edit_vaildcode = (EditText) findViewById(R.id.edit_vaildcode);
-		login = (Button) findViewById(R.id.btn_login);
-		login.setOnClickListener(this);
-		getvaild = (Button) findViewById(R.id.getvaild);
-		getvaild.setOnClickListener(this);
-		// 开启短信的contentresolver
-		smsContent = new SmsContent(LoginActivity.this, new Handler(),
-				edit_vaildcode);
-		this.getContentResolver().registerContentObserver(
-				Uri.parse("content://sms/"), true, smsContent);
 	}
 
 	ProgressDialog progress = null;
@@ -117,13 +93,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 					parmas.put("verify", edit_vaildcode.getText().toString());
 					// 开始请求
 					try {
-						NetUtil.getinstance().http(
-								getString(R.string.url) + "/sms/login/verify",
-								parmas, new callback() {
+						NetUtil.getinstance().http("/sms/login/verify", parmas,
+								new callback() {
 
 									@Override
 									public void success(JSONObject json) {
-										// TODO Auto-generated method stub
 
 										Log.i("json", json.toString());
 										try {
@@ -139,14 +113,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 												}
 											} else if (json.getInt("ret") == 1) {
 												progress.dismiss();
-												HandlerUtil.sendmsg(
-														handlercode, "验证码已过期",
-														2);
+												HandlerUtil
+														.sendmsg(
+																handler,
+																getString(R.string.Captchaoverdue),
+																2);
 											} else if (json.getInt("ret") == 2) {
 												progress.dismiss();
 												HandlerUtil
-														.sendmsg(handlercode,
-																"验证码错误", 2);
+														.sendmsg(
+																handler,
+																getString(R.string.vaild_error),
+																2);
 											}
 										} catch (JSONException e) {
 											e.printStackTrace();
@@ -156,13 +134,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 									@Override
 									public void error(String errorresult) {
-										// TODO Auto-generated method stub
-										HandlerUtil.sendmsg(handlercode,
+										HandlerUtil.sendmsg(handler,
 												errorresult, 2);
 									}
 								}, LoginActivity.this);
 					} catch (SocketTimeoutException e) {
-						HandlerUtil.sendmsg(handlercode, "请求超时！", 2);
+						HandlerUtil.sendmsg(handler,
+								getString(R.string.time_out), 2);
 						e.printStackTrace();
 					}
 				}
@@ -190,21 +168,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 					Map<String, String> params = new HashMap<String, String>();
 					params.put("phone", edit_phonenum.getText().toString());
 					try {
-						NetUtil.getinstance().http(
-								getString(R.string.url) + "/sms/send/verify",
-								params, new callback() {
+						NetUtil.getinstance().http("/sms/send/verify", params,
+								new callback() {
 
 									// 请求成功
 									@Override
 									public void success(JSONObject json) {
-										// TODO Auto-generated method stub
 										try {
 											int ret = json.getInt("ret");
 											if (ret == 0) {
 												Log.i("verify", "验证码请求成功");
-												handlercode.sendEmptyMessage(3);
+												handler.sendEmptyMessage(3);
 											} else if (ret == 1) {
-												handlercode.sendEmptyMessage(5);
+												handler.sendEmptyMessage(5);
 											}
 										} catch (JSONException e) {
 											e.printStackTrace();
@@ -214,13 +190,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 									// 请求失败回掉
 									@Override
 									public void error(String errorresult) {
-										// TODO Auto-generated method stub
-										HandlerUtil.sendmsg(handlercode,
+										HandlerUtil.sendmsg(handler,
 												errorresult, 2);
 									}
 								}, LoginActivity.this);
 					} catch (SocketTimeoutException e) {
-						HandlerUtil.sendmsg(handlercode, "请求超时", 2);
+						HandlerUtil.sendmsg(handler, "请求超时", 2);
 						e.printStackTrace();
 					}
 				}
@@ -314,7 +289,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 						}
 
 						// 进入主页面
-						handlercode.sendEmptyMessage(4);
+						handler.sendEmptyMessage(4);
 					}
 
 					@Override
@@ -385,70 +360,139 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	int flag = 0;
+
 	// 设置按钮内容
-	Handler handlercode = new Handler() {
-		public void dispatchMessage(Message msg) {
-			if (msg.what == 0) {
-				getvaild.setText("剩余" + index + "秒");
-			} else if (msg.what == 1) {
-				getvaild.getBackground().setAlpha(255);
-				getvaild.setText("重新获取");
-				getvaild.setEnabled(true);
-				index = 60;
-			} else if (msg.what == 2) {
-				ToastUtil.showtomain(LoginActivity.this, msg.getData()
-						.getString("result"));
-			} else if (msg.what == 3) {
-				getvaild.setEnabled(false);
-				getvaild.getBackground().setAlpha(80);
-				edit_vaildcode.requestFocus();
-				// 开启timer任务
-				timer = new Timer();
-				timer.schedule(new TimerTask() {
+	@Override
+	public void onHandlerMessage(Message msg) {
+		if (msg.what == 0) {
+			getvaild.setText("剩余" + index + "秒");
+		} else if (msg.what == 1) {
+			getvaild.getBackground().setAlpha(255);
+			getvaild.setText("重新获取");
+			getvaild.setEnabled(true);
+			index = 60;
+		} else if (msg.what == 2) {
+			ToastUtil.showtomain(LoginActivity.this,
+					msg.getData().getString("result"));
+		} else if (msg.what == 3) {
+			getvaild.setEnabled(false);
+			getvaild.getBackground().setAlpha(80);
+			edit_vaildcode.requestFocus();
+			// 开启timer任务
+			timer = new Timer();
+			timer.schedule(new TimerTask() {
 
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						if (index == 0) {
-							handlercode.sendEmptyMessage(1);
-							if (timer != null) {
-								timer.cancel();
-							}
-
-							return;
+				@Override
+				public void run() {
+					if (index == 0) {
+						handler.sendEmptyMessage(1);
+						if (timer != null) {
+							timer.cancel();
 						}
-						Log.i("Timer", index + "");
-						handlercode.sendEmptyMessage(0);
-						index--;
-					}
-				}, new Date(), 1000);
 
-			} else if (msg.what == 4) {
-				getvaild.setEnabled(true);
-				index = 60;
-				getvaild.getBackground().setAlpha(255);
-				StartUtil.startintent(LoginActivity.this,
-						ConnectActivity.class, "finish");
-			} else if (msg.what == 5) {
-				ToastUtil.showtomain(LoginActivity.this, "太频繁啦！请稍后再试试！");
-			}
-		};
-	};
+						return;
+					}
+					Log.i("Timer", index + "");
+					handler.sendEmptyMessage(0);
+					index--;
+				}
+			}, new Date(), 1000);
+
+		} else if (msg.what == 4) {
+			getvaild.setEnabled(true);
+			index = 60;
+			getvaild.getBackground().setAlpha(255);
+			getSharedPreferences("login", MODE_PRIVATE)
+					.edit()
+					.putString("login_phonenumber",
+							edit_phonenum.getText().toString()).commit();
+			StartUtil.startintent(LoginActivity.this, ConnectActivity.class,
+					"finish");
+		} else if (msg.what == 5) {
+			ToastUtil.showtomain(LoginActivity.this, "太频繁啦！请稍后再试试！");
+		}
+		super.onHandlerMessage(msg);
+	}
+
 	// 倒计时时间
 	int index = 60;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.login, menu);
+
 		return true;
 	}
 
 	@Override
 	protected void onDestroy() {
-		// 页面销毁，销毁短信获取对象
-		if (smsContent != null) {
-			this.getContentResolver().unregisterContentObserver(smsContent);
-		}
+
 		super.onDestroy();
+	}
+
+	String mode = "";
+
+	public void toggle_mode() {
+
+		if (getSharedPreferences("net_state", MODE_PRIVATE).getString("state",
+				null).equals("official")) {
+			mode = "测试服";
+			Constants.address = getString(R.string.test_url);
+			Constants.ip = getString(R.string.test_ip);
+			getSharedPreferences("net_state", MODE_PRIVATE).edit()
+					.putString("state", "test").commit();
+		} else {
+			mode = "正式服";
+			Constants.address = getString(R.string.url);
+			Constants.ip = getString(R.string.ip);
+			getSharedPreferences("net_state", MODE_PRIVATE).edit()
+					.putString("state", "official").commit();
+		}
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ToastUtil.showtomain(LoginActivity.this, "已切换为" + mode);
+			}
+		});
+	}
+
+	int index_mode = 0;
+	long starttime;
+
+	public void togglemode(View view) {
+		if (System.currentTimeMillis() - starttime > 500) {
+			starttime = System.currentTimeMillis();
+			index_mode++;
+		} else {
+			index_mode = 0;
+		}
+		if (index_mode == 10) {
+			toggle_mode();
+			index_mode = 0;
+		}
+	}
+
+	@Override
+	public void initlayout(OnRefreshListener onRefreshListener) {
+		setContentView(R.layout.activity_login);
+		SharedPreferences sharedPreferences = getSharedPreferences("userinfo",
+				MODE_PRIVATE);
+		int id = sharedPreferences.getInt("id", 0);
+		// 如果本地存在记录则自动跳转
+		if (id != 0 && DemoHXSDKHelper.getInstance().isLogined()) {
+			StartUtil.startintent(this, ConnectActivity.class, "finish");
+			return;
+		}
+
+		edit_phonenum = (EditText) findViewById(R.id.edit_phonenumber);
+		edit_vaildcode = (EditText) findViewById(R.id.edit_vaildcode);
+		if (getSharedPreferences("login", MODE_PRIVATE).getString(
+				"login_phonenumber", null) != null) {
+			edit_phonenum.setText(getSharedPreferences("login", MODE_PRIVATE)
+					.getString("login_phonenumber", ""));
+		}
+		login = (Button) findViewById(R.id.btn_login);
+		login.setOnClickListener(this);
+		getvaild = (Button) findViewById(R.id.getvaild);
+		getvaild.setOnClickListener(this);
 	}
 }

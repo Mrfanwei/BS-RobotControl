@@ -15,11 +15,15 @@ package com.robotcontrol.huanxin;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 import com.easemob.EMCallBack;
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
 import com.google.code.microlog4android.config.PropertyConfigurator;
+import com.robotcontrol.activity.R;
+import com.robotcontrol.service.SocketService;
+import com.robotcontrol.utils.Constants;
 import com.robotcontrol.utils.LogHelper;
 import com.robotcontrol.utils.NetUtil;
 
@@ -29,23 +33,40 @@ public class DemoApplication extends Application {
 	private static DemoApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
-	public static final Logger logger=LoggerFactory.getLogger(DemoApplication.class);
+	public static final Logger logger = LoggerFactory
+			.getLogger(DemoApplication.class);
 
 	/**
 	 * 当前用户nickname,为了苹果推送不是userid而是昵称
 	 */
 	public static String currentUserNick = "";
 	public static DemoHXSDKHelper hxSDKHelper = new DemoHXSDKHelper();
+	static int flag = 1;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		applicationContext = this;
 		instance = this;
-
 		new NetUtil();
 		LogHelper.getInstance(instance).start();
 		PropertyConfigurator.getConfigurator(this).configure();
+		String net_state = getSharedPreferences("net_state", 0).getString(
+				"state", null);
+		if (net_state == null) {
+			getSharedPreferences("net_state", MODE_PRIVATE).edit()
+					.putString("state", "official").commit();
+		} else {
+			if (!getSharedPreferences("net_state", MODE_PRIVATE).getString(
+					"state", "official").equals("official")) {
+				Constants.address = getString(R.string.test_url);
+				Constants.ip = getString(R.string.test_ip);
+			} else {
+				Constants.address = getString(R.string.url);
+				Constants.ip = getString(R.string.ip);
+			}
+		}
+		startService(new Intent(this, SocketService.class));
 		/**
 		 * this function will initialize the HuanXin SDK
 		 * 

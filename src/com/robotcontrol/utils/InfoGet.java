@@ -6,7 +6,6 @@ import java.io.LineNumberReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
 import android.util.Log;
 
 public class InfoGet {
@@ -99,6 +98,5 @@ public class InfoGet {
 
 		return b;
 	}
-	
-	
+
 }

@@ -165,7 +165,5 @@
         android:id="@+id/qav_bottom_bar"
         android:layout_alignParentBottom="true"
         layout="@layout/qav_bottom_bar" />
-    
-
 
 </RelativeLayout>

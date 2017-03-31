@@ -6,6 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.ByteOrder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -17,6 +20,9 @@ import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.MessageEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.robotcontrol.bean.Alarm;
+import com.robotcontrol.bean.Remind;
 
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +50,7 @@ public class NetUtil {
 			Context context) throws SocketTimeoutException {
 
 		try {
-			Http http = new Http(url);
+			Http http = new Http(Constants.address + url);
 			http.setRequestProperty("Content-Type", "text/plain;charset=utf-8;");
 			http.setCharset("utf-8");
 			http.setReadTimeout(Constants.timeout);
@@ -77,9 +83,14 @@ public class NetUtil {
 			uri = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) uri
 					.openConnection();
+			connection.setConnectTimeout(5000);
+			connection.setReadTimeout(8000);
 			inputstream = connection.getInputStream();
 
 		} catch (Exception e) {
+			if (e instanceof SocketTimeoutException) {
+				call.error("网络连接超时！");
+			}
 			if (isConnect(context)) {
 				call.error("网络连接失败！");
 			} else {
@@ -197,7 +208,25 @@ public class NetUtil {
 			}
 			Log.i("Heart", 0 + "");
 			break;
+		case 4:
+			try {
+				str = "{\"rid\":\"" + params.getString("rid") + "\",\"id\":\""
+						+ params.getInt("id") + "\",\"session\":\""
+						+ params.getString("session")
+						+ "\",\"cmd\":\"/robot/uncontroll\"}";
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			channelBuffer = new DynamicChannelBuffer(ByteOrder.BIG_ENDIAN,
+					12 + str.getBytes().length);
+			channelBuffer.writeByte((byte) 1);
+			for (int i = 0; i < 7; i++) {
+				channelBuffer.writeByte((byte) 0);
+			}
+			channelBuffer.writeBytes(int2Byte(str.length()));
+			channelBuffer.writeBytes(str.getBytes());
 
+			break;
 		default:
 			break;
 		}
@@ -216,25 +245,104 @@ public class NetUtil {
 					+ Constants.task.getId()
 					+ "\",\"time\":\"\",\"title\":\"\",\"content\":\"\",\"seq\":\"\"}}";
 		} else if (intent.getAction().equals(Constants.Task_Add)) {
-			request_content = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"remind_insert\",\"id\":\""
-					+ Constants.task.getId()
-					+ "\",\"time\":\""
-					+ Constants.task.getSettime()
-					+ "\",\"title\":\""
-					+ Constants.task.getTitle()
-					+ "\",\"content\":\""
-					+ Constants.task.getContent() + "\",\"seq\":\"0\"}}";
+			if (Constants.task instanceof Alarm) {
+				Alarm alarm = (Alarm) Constants.task;
+				boolean fl = true;
+				if (alarm.getIsaways() == 1) {
+					fl = true;
+				} else {
+					fl = false;
+				}
+				request_content = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"remind_insert\",\"id\":\""
+						+ alarm.getId()
+						+ "\",\"time\":\""
+						+ System.currentTimeMillis()
+						+ "\",\"title\":\""
+						+ alarm.getTitle()
+						+ "\",\"content\":\""
+						+ alarm.getContent()
+						+ "\",\"seq\":\""
+						+ alarm.getSettime()
+						+ ":00"
+						+ "<day>"
+						+ alarm.getWeek()
+						+ "</day><repeat>"
+						+ fl
+						+ "</repeat>\"}}";
+			} else if (Constants.task instanceof Remind) {
+				Remind remind = (Remind) Constants.task;
+				String[] time = remind.getSettime().split(" ");
+				String[] ti = time[1].split(":");
+				if (Integer.parseInt(ti[0]) < 10) {
+					time[1] = "0" + time[1];
+				}
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss");
+				Date date = null;
+				try {
+					date = simpleDateFormat.parse(remind.getSettime());
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				request_content = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"remind_insert\",\"id\":\""
+						+ remind.getId()
+						+ "\",\"time\":\""
+						+ date.getTime()
+						+ "\",\"title\":\""
+						+ remind.getTitle()
+						+ "\",\"content\":\""
+						+ remind.getContent()
+						+ "\",\"seq\":\"0\"}}";
+			}
 		} else if (intent.getAction().equals(Constants.Task_Query)) {
 			request_content = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"remind_query\",\"id\":\"\",\"time\":\"\",\"title\":\"\",\"content\":\"\",\"seq\":\"\"}}";
 		} else if (intent.getAction().equals(Constants.Task_Updata)) {
-			request_content = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"remind_updata\",\"id\":\""
-					+ Constants.task.getId()
-					+ "\",\"time\":\""
-					+ Constants.task.getSettime()
-					+ "\",\"title\":\""
-					+ Constants.task.getTitle()
-					+ "\",\"content\":\""
-					+ Constants.task.getContent() + "\",\"seq\":\"0\"}}";
+			if (Constants.task instanceof Alarm) {
+				Alarm alarm = (Alarm) Constants.task;
+				boolean fl = true;
+				if (alarm.getIsaways() == 1) {
+					fl = true;
+				} else {
+					fl = false;
+				}
+				request_content = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"remind_updata\",\"id\":\""
+						+ alarm.getId()
+						+ "\",\"time\":\""
+						+ System.currentTimeMillis()
+						+ "\",\"title\":\""
+						+ alarm.getTitle()
+						+ "\",\"content\":\""
+						+ alarm.getContent()
+						+ "\",\"seq\":\""
+						+ alarm.getSettime()
+						+ ":00"
+						+ "<day>"
+						+ alarm.getWeek()
+						+ "</day><repeat>"
+						+ fl
+						+ "</repeat>\"}}";
+			} else if (Constants.task instanceof Remind) {
+				Remind remind = (Remind) Constants.task;
+				String[] time = remind.getSettime().split(" ");
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss");
+				Date date = null;
+				try {
+					date = simpleDateFormat.parse(remind.getSettime());
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+
+				request_content = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"remind_updata\",\"id\":\""
+						+ remind.getId()
+						+ "\",\"time\":\""
+						+ date.getTime()
+						+ "\",\"title\":\""
+						+ remind.getTitle()
+						+ "\",\"content\":\""
+						+ remind.getContent()
+						+ "\",\"seq\":\"0\"}}";
+			}
 		}
 
 		Log.i("request", request_content);
@@ -265,12 +373,18 @@ public class NetUtil {
 		if (intent.getAction().equals(Constants.Photo_Query_Name)) {
 			photo_operation = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"photo_query\",\"type\":\"photo_query_list\"}}";
 		} else if (intent.getAction().equals(Constants.Photo_Delete)) {
-			photo_operation = "";
+			String[] names = intent.getStringArrayExtra("delete_names");
+			String name = "[";
+			for (int i = 0; i < names.length; i++) {
+				name += "{\"name\":\"" + names[i] + "\"},";
+			}
+			name = name.substring(0, name.length() - 1);
+			name += "]";
+			photo_operation = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"photo_query\",\"type\":\"photo_delete\",\"names\":"
+					+ name + "}}";
 		} else if (intent.getAction().equals(Constants.Photo_Query)) {
-			photo_operation = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"photo_query\",\"type\":\"photo_query_thumbnail\",\"name\":\""
+			photo_operation = "{\"cmd\":\"/robot/push\",\"command\":{\"cmd\":\"photo_query\",\"type\":\"photo_query_original\",\"name\":\""
 					+ intent.getStringExtra("name") + "\"}}";
-		} else if (intent.getAction().equals(Constants.Photo_Download)) {
-			photo_operation = "";
 		}
 		Log.i("request", photo_operation);
 		try {

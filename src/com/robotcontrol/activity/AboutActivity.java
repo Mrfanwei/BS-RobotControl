@@ -2,6 +2,7 @@ package com.robotcontrol.activity;
 
 import java.lang.reflect.Field;
 
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -22,7 +23,7 @@ public class AboutActivity extends Activity {
 		WebSettings set = about.getSettings();
 		set.setJavaScriptEnabled(true);
 		set.setBuiltInZoomControls(true);
-		setZoomControlGone(about);
+		setZoomControlGone(about);	
 		about.loadUrl(getString(R.string.about_url));
 	}
 
@@ -74,7 +75,7 @@ public class AboutActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.about, menu);
+		
 		return true;
 	}
 

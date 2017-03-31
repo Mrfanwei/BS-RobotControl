@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
+
+    <Button
+        android:id="@+id/alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button"
+        android:onClick="ontime"
+        android:text="选择时间" />
+
+    <TextView
+        android:id="@+id/chooseweek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alarm_time"
+        android:layout_marginLeft="5dp"
+        android:text="请选择星期："
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/week"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chooseweek"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/zhou1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="周一" />
+
+        <Button
+            android:id="@+id/zhou2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="周二" />
+
+        <Button
+            android:id="@+id/zhou3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="周三" />
+
+        <Button
+            android:id="@+id/zhou4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="周四" />
+
+        <Button
+            android:id="@+id/zhou5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="周五" />
+
+        <Button
+            android:id="@+id/zhou6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="周六" />
+
+        <Button
+            android:id="@+id/zhou7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="周日" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/task_content_alarm"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/button"
+        android:ems="10"
+        android:hint="请输入提醒内容"
+        android:textColorHint="@color/white" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="57dp"
+        android:background="@drawable/button"
+        android:onClick="over"
+        android:text="完成" />
+
+    <EditText
+        android:id="@+id/task_title_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/week"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button"
+        android:ems="10"
+        android:hint="请输入标题"
+        android:textColorHint="@color/white" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/task_title_alarm"
+        android:layout_alignBottom="@+id/task_title_alarm"
+        android:layout_alignRight="@+id/task_title_alarm"
+        android:background="@drawable/about"
+        android:onClick="choose" />
+
+    <TextView
+        android:id="@+id/alarm_isaways"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_title_alarm"
+        android:layout_marginLeft="10dp"
+        android:text="是否重复:"
+        android:textColor="@android:color/black" />
+
+    <com.robotcontrol.widget.SwitchButton
+        android:id="@+id/isaways_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:layout_alignTop="@+id/alarm_isaways"
+        android:layout_marginLeft="50dp"
+        android:layout_toRightOf="@+id/chooseweek"
+        android:checked="true" />
+
+</RelativeLayout>
